@@ -13,5 +13,5 @@ useradd -s /usr/sbin/nologin -r -M cloudflared \
     && chown cloudflared:cloudflared /usr/local/bin/cloudflared
     
 # clean cloudflared config
-RUN mkdir -p /etc/cloudflared \
+mkdir -p /etc/cloudflared \
     && rm -f /etc/cloudflared/config.yml
