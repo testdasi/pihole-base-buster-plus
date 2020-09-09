@@ -1,9 +1,8 @@
 #!/bin/bash
 
-apt-get -y update
-
 # install stubby
-apt-get -y install stubby
+apt-get -y update \
+    && apt-get -y install stubby
 
 # clean stubby config
 mkdir -p /etc/stubby \
