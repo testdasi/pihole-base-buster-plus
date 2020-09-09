@@ -1,7 +1,9 @@
 #!/bin/bash
 
+apt-get -y update
+
 # install stubby
-sudo apt-get -y install stubby
+apt-get -y install stubby
 
 # clean stubby config
 mkdir -p /etc/stubby \
@@ -15,3 +17,9 @@ useradd -s /usr/sbin/nologin -r -M cloudflared \
 # clean cloudflared config
 mkdir -p /etc/cloudflared \
     && rm -f /etc/cloudflared/config.yml
+
+# clean up
+apt-get -y autoremove \
+    && apt-get -y autoclean \
+    && apt-get -y clean \
+    && rm -fr /tmp/* /var/tmp/* /var/lib/apt/lists/*
