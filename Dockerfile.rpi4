@@ -1,5 +1,6 @@
 FROM testdasi/pihole-base-buster:latest-rpi4
 
+# install cloudflared
 RUN cd /tmp \
     && wget https://bin.equinox.io/c/VdrWdbjqyF/cloudflared-stable-linux-arm.tgz \
     && tar -xvzf ./cloudflared-stable-linux-arm.tgz \
