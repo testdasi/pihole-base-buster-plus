@@ -21,13 +21,13 @@ then
     && tar -xvzf ./cloudflared-stable-linux-arm.tgz \
     && cp ./cloudflared /usr/local/bin \
     && rm -f ./cloudflared-stable-linux-arm.tgz \
-    && echo "Cloudflared install for arm due to ${TAG}"
+    && echo "Cloudflared installed for arm due to tag ${TAG}"
 else 
     cd /tmp \
     && wget https://bin.equinox.io/c/VdrWdbjqyF/cloudflared-stable-linux-amd64.deb \
     && apt install ./cloudflared-stable-linux-amd64.deb \
     && rm -f ./cloudflared-stable-linux-amd64.deb \
-    && echo "Cloudflared install for amd64 due to ${TAG}"
+    && echo "Cloudflared installed for amd64 due to tag ${TAG}"
 fi
 useradd -s /usr/sbin/nologin -r -M cloudflared \
     && chown cloudflared:cloudflared /usr/local/bin/cloudflared
