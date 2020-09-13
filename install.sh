@@ -1,5 +1,10 @@
 #!/bin/bash
 
+# install basic packages
+apt-get -y update \
+    && apt-get -y dist-upgrade \
+    && apt-get -y install sudo bash nano
+    
 # install stubby
 apt-get -y update \
     && apt-get -y install stubby
@@ -9,7 +14,21 @@ mkdir -p /etc/stubby \
     && rm -f /etc/stubby/stubby.yml
 
 # install cloudflared
-# partially done in Dockerfile due to platform difference
+if [[ ${TAG} =~ "rpi4" ]]
+then 
+    cd /tmp \
+    && wget https://bin.equinox.io/c/VdrWdbjqyF/cloudflared-stable-linux-arm.tgz \
+    && tar -xvzf ./cloudflared-stable-linux-arm.tgz \
+    && cp ./cloudflared /usr/local/bin \
+    && rm -f ./cloudflared-stable-linux-arm.tgz \
+    && echo "Cloudflared install for arm due to ${TAG}"
+else 
+    cd /tmp \
+    && wget https://bin.equinox.io/c/VdrWdbjqyF/cloudflared-stable-linux-amd64.deb \
+    && apt install ./cloudflared-stable-linux-amd64.deb \
+    && rm -f ./cloudflared-stable-linux-amd64.deb \
+    && echo "Cloudflared install for amd64 due to ${TAG}"
+fi
 useradd -s /usr/sbin/nologin -r -M cloudflared \
     && chown cloudflared:cloudflared /usr/local/bin/cloudflared
     
