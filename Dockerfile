@@ -9,7 +9,7 @@
 #    && rm -f /install.sh
 
 ARG TAG=latest
-#ENV TAG "${TAG}"
+ENV TAG "${TAG}"
 FROM pihole/pihole:master-buster
 
 COPY ./install.sh /
