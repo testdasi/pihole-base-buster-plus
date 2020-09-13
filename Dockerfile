@@ -8,14 +8,15 @@
 #    && /bin/bash /install.sh \
 #    && rm -f /install.sh
 
-ARG TAG=latest
-FROM pihole/pihole:master-buster
-
-ENV TAG "${TAG}"
+ARG FRM='pihole/pihole:master-buster'
+ARG TAG='latest'
+FROM ${FRM}
+ARG FRM
+ARG TAG
 
 COPY ./install.sh /
 
 RUN /bin/bash /install.sh \
     && rm -f /install.sh
 
-RUN echo "$(date "+%d.%m.%Y %T") ${TAG}" >> /build_date.info
+RUN echo "$(date "+%d.%m.%Y %T") Built from ${FRM} with tag ${TAG}" >> /build_date.info
