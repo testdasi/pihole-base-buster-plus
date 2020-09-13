@@ -14,11 +14,7 @@ FROM pihole/pihole:master-buster
 
 COPY ./install.sh /
 
-# Install some small required packages
-RUN apt-get -y update \
-    && apt-get -y dist-upgrade \
-    && apt-get -y install sudo bash nano \
-    && /bin/bash /install.sh \
+RUN /bin/bash /install.sh \
     && rm -f /install.sh
 
 RUN echo "$(date "+%d.%m.%Y %T") ${TAG}" >> /build_date.info
