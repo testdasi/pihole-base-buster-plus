@@ -4,6 +4,7 @@ ARG TAG='latest'
 FROM ${FRM}
 ARG FRM
 ARG TAG
+ARG TARGETPLATFORM
 
 COPY ./install.sh /
 
