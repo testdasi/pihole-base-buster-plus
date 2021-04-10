@@ -14,7 +14,7 @@ mkdir -p /etc/stubby \
     && rm -f /etc/stubby/stubby.yml
 
 # install cloudflared
-if [[ ${TAG} =~ "rpi4" ]]
+if [[ ${TARGETPLATFORM} =~ "arm" ]]
 then 
     cd /tmp \
     && wget https://bin.equinox.io/c/VdrWdbjqyF/cloudflared-stable-linux-arm.tgz \
