@@ -1,10 +1,10 @@
-#!/bin/bash
+#!/bin/bash -e
 
 # install basic packages
 apt-get -y update \
     && apt-get -y dist-upgrade \
     && apt-get -y install sudo bash nano
-    
+
 # install stubby
 apt-get -y update \
     && apt-get -y install stubby
@@ -15,23 +15,23 @@ mkdir -p /etc/stubby \
 
 # install cloudflared
 if [[ ${TARGETPLATFORM} =~ "arm" ]]
-then 
+then
     cd /tmp \
-    && wget https://bin.equinox.io/c/VdrWdbjqyF/cloudflared-stable-linux-arm.tgz \
+    && curl -O https://bin.equinox.io/c/VdrWdbjqyF/cloudflared-stable-linux-arm.tgz \
     && tar -xvzf ./cloudflared-stable-linux-arm.tgz \
     && cp ./cloudflared /usr/local/bin \
     && rm -f ./cloudflared-stable-linux-arm.tgz \
     && echo "Cloudflared installed for arm due to tag ${TAG}"
-else 
+else
     cd /tmp \
-    && wget https://bin.equinox.io/c/VdrWdbjqyF/cloudflared-stable-linux-amd64.deb \
-    && apt install ./cloudflared-stable-linux-amd64.deb \
+    && curl -O https://bin.equinox.io/c/VdrWdbjqyF/cloudflared-stable-linux-amd64.deb \
+    && dpkg -i ./cloudflared-stable-linux-amd64.deb \
     && rm -f ./cloudflared-stable-linux-amd64.deb \
     && echo "Cloudflared installed for amd64 due to tag ${TAG}"
 fi
 useradd -s /usr/sbin/nologin -r -M cloudflared \
     && chown cloudflared:cloudflared /usr/local/bin/cloudflared
-    
+
 # clean cloudflared config
 mkdir -p /etc/cloudflared \
     && rm -f /etc/cloudflared/config.yml
@@ -41,3 +41,7 @@ apt-get -y autoremove \
     && apt-get -y autoclean \
     && apt-get -y clean \
     && rm -fr /tmp/* /var/tmp/* /var/lib/apt/lists/*
+
+# installed version
+cloudflared --version
+
