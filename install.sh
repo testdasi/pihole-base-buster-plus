@@ -25,7 +25,6 @@ if [[ ${TARGETPLATFORM} =~ "arm" ]]
 then 
     cd /tmp \
     && curl -L https://api.github.com/repos/cloudflare/cloudflared/releases/assets/${cloudflared_arm} -o cloudflared -H 'Accept: application/octet-stream'
-    && tar -xvzf ./cloudflared-stable-linux-arm.tgz \
     && mv ./cloudflared /usr/local/bin \
     && echo "Cloudflared installed for arm due to tag ${TAG}"
 else 
