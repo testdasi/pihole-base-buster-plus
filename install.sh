@@ -14,18 +14,23 @@ mkdir -p /etc/stubby \
     && rm -f /etc/stubby/stubby.yml
 
 # install cloudflared
+
+# get latest cloudflared-linux-arm assetid
+cloudflared_arm=$(curl -sSL https://api.github.com/repos/cloudflare/cloudflared/releases | grep -B 2 "\"name\": \"cloudflared-linux-arm\"" | head -1 | sed 's/.*"id": \(.*\),/\1/')
+
+# get latest cloudflared-linux-amd64.deb assetid
+cloudflared_amd64=$(curl -sSL https://api.github.com/repos/cloudflare/cloudflared/releases | grep -B 2 "\"name\": \"cloudflared-linux-amd64.deb\"" | head -1 | sed 's/.*"id": \(.*\),/\1/')
+
 if [[ ${TARGETPLATFORM} =~ "arm" ]]
 then 
     cd /tmp \
-    && wget https://bin.equinox.io/c/VdrWdbjqyF/cloudflared-stable-linux-arm.tgz \
-    && tar -xvzf ./cloudflared-stable-linux-arm.tgz \
-    && cp ./cloudflared /usr/local/bin \
-    && rm -f ./cloudflared-stable-linux-arm.tgz \
+    && curl -L https://api.github.com/repos/cloudflare/cloudflared/releases/assets/${cloudflared_arm} -o cloudflared -H 'Accept: application/octet-stream'
+    && mv ./cloudflared /usr/local/bin \
     && echo "Cloudflared installed for arm due to tag ${TAG}"
 else 
     cd /tmp \
-    && wget https://bin.equinox.io/c/VdrWdbjqyF/cloudflared-stable-linux-amd64.deb \
-    && apt install ./cloudflared-stable-linux-amd64.deb \
+    && curl -L https://api.github.com/repos/cloudflare/cloudflared/releases/assets/${cloudflared_amd64} -o cloudflared-linux-amd64.deb -H 'Accept: application/octet-stream'
+    && dpkg -i ./cloudflared-linux-amd64.deb \
     && rm -f ./cloudflared-stable-linux-amd64.deb \
     && echo "Cloudflared installed for amd64 due to tag ${TAG}"
 fi
